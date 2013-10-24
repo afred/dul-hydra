@@ -52,6 +52,11 @@ describe "object routes" do
       expect(:get => '/objects/duke:1/datastreams/content').to route_to(@route)
       expect(:get => download_datastream_object_path('duke:1', 'content')).to route_to(@route)
     end
+    it "should have an 'upload' route" do
+      @route = {controller: 'objects', action: 'upload', id: 'duke:1'}
+      expect(:put => '/objects/duke:1/upload').to route_to(@route)
+      expect(:put => upload_object_path('duke:1')).to route_to(@route)
+    end
     describe "descriptive metadata editing routes" do
       it "should have an edit route" do
         @route = {controller: 'objects', action: 'edit', id: 'duke:1'}
