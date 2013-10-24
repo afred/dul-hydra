@@ -1,4 +1,8 @@
 class AdminPoliciesController < ApplicationController
+
+  include DulHydra::Controller::ObjectsControllerBehavior
+
+  layout 'objects'
   
   load_and_authorize_resource
 
@@ -22,6 +26,13 @@ class AdminPoliciesController < ApplicationController
     @admin_policy.update_attributes(params[:admin_policy])
     flash[:notice] = I18n.t('dul_hydra.admin_policies.messages.updated')
     redirect_to object_path(@admin_policy)
+  end
+
+  protected
+
+  # Override
+  def current_object
+    @admin_policy
   end
   
 end

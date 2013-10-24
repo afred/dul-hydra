@@ -32,7 +32,7 @@ en:
       messages:
         updated: 'Admin Policy updated'
       page_titles:
-        edit: 'Editing Admin Policy'
+        edit: 'Edit Default Permissions'
   blacklight:
     application_name: 'Duke Digital Repository'
     header_links:

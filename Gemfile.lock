@@ -291,6 +291,7 @@ DEPENDENCIES
   active-fedora (~> 6.6)
   blacklight (= 4.5.0.rc1)
   bootstrap-sass
+  bootstrap_forms
   capybara (~> 2.0)
   delayed_job_active_record
   devise
