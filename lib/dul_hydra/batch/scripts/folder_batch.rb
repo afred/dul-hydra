@@ -34,6 +34,8 @@ module DulHydra::Batch::Scripts
               :batch => @batch,
               :model => FILE_OBJECT_MODEL
               )
+      obj.save
+      obj.process
     end
 
     def create_batch(user)

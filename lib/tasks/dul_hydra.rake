@@ -16,6 +16,17 @@ namespace :dul_hydra do
 	end
     end
     namespace :batch do
+        desc "Creates and ingests a batch of objects based on a directory path"
+        task :folder_batch_ingest => :environment do
+          raise "Must specify directory path.  Ex. dirpath=/nas/VOL/archive/COLL" unless ENV['dirpath']
+          raise "Must specify username associated with batch.  Ex. username=netid@institution.edu" unless ENV['username']
+          opts = {
+            :dirpath => ENV['dirpath'],
+            :username => ENV['username']
+          }
+          script = DulHydra::Batch::Scripts::FolderBatch.new(opts)
+          script.execute
+        end
         desc "Converts CSV file to one or more XML files"
         task :csv_to_xml => :environment do
           raise "Must specify CSV file.  Ex.: csv=/srv/fedora-working/ingest/COL/cdm/export.csv" unless ENV['csv']
