@@ -108,7 +108,7 @@ DulHydra version #{DulHydra::VERSION}
       return errs
     end
   
-    def add_datastream(repo_object, datastream, dryrun)
+    def add_datastream(repo_object, datastream)
       case datastream[:payload_type]
       when DulHydra::Batch::Models::BatchObjectDatastream::PAYLOAD_TYPE_BYTES
         repo_object.datastreams[datastream[:name]].content = datastream[:payload]
@@ -125,11 +125,7 @@ DulHydra version #{DulHydra::VERSION}
       end
       if datastream[:name].eql?(DulHydra::Datastreams::CONTENT)
         if DulHydra::Derivatives::Image.derivable?(repo_object.datastreams[datastream[:name]].mimeType)
-          if dryrun
-            repo_object.generate_thumbnail(repo_object.datastreams[datastream[:name]])
-          else
-            repo_object.generate_thumbnail!(repo_object.datastreams[datastream[:name]])
-          end
+          repo_object.generate_thumbnail!(repo_object.datastreams[datastream[:name]])
         end
       end
       return repo_object

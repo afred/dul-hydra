@@ -10,7 +10,6 @@ module DulHydra::Batch::Scripts
     #   :log_dir - optional - directory for log file - default is given in DEFAULT_LOG_DIR
     #   :log_file - optional - filename of log file - default is given in DEFAULT_LOG_FILE
     #   :validate_only - optional - whether to only validate the manifest - default is false
-    #   :dryrun - optional - whether this is a processing dry run or the real deal - default is false
     #   :skip_validation - optional - whether to skip batch object validation step when processing - default is false
     #   :ignore_validation_errors - optional - whether to continue processing even if batch object validation errors occur - default is false
     def initialize(opts={})
@@ -22,7 +21,6 @@ module DulHydra::Batch::Scripts
       @log_dir = opts.fetch(:log_dir, DEFAULT_LOG_DIR)
       @log_file = opts.fetch(:log_file, DEFAULT_LOG_FILE)
       @validate_only = opts.fetch(:validate_only, false)
-      @dryrun = opts.fetch(:dryrun, false)
       @skip_validation = opts.fetch(:skip_validation, false)
       @ignore_validation_errors = opts.fetch(:ignore_validation_errors, false)
     end

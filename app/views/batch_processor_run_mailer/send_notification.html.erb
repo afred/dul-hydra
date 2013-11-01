@@ -22,7 +22,7 @@ td { text-align: right; }
 	  Outcome: <%= @batch.outcome %>
 	</p>
 	<p>
-	  Objects in batch: <%= @batch.total %><br />
+	  Objects in batch: <%= @batch.batch_objects.size %><br />
 	  Successfully processed: <%= @batch.success %><br />
 	  Processing failures: <%= @batch.failure %><br />
 	  Unprocessed: <%= @batch.total - @batch.success - @batch.failure %>
