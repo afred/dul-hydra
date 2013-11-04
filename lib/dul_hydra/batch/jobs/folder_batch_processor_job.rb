@@ -4,7 +4,7 @@ module DulHydra::Batch::Jobs
     def perform
       ts = Time.now.to_i
       logfile = "batch_processor_#{ts}.log"
-      fb = DulHydra::Batch::Scripts::FolderBatch.new(:dirpath => dirpath, :username => username, :log_file => logfile)
+      fb = DulHydra::Batch::Scripts::FolderBatchProcessor.new(:dirpath => dirpath, :username => username, :log_file => logfile)
       fb.execute
     end
     

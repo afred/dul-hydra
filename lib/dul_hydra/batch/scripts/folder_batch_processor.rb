@@ -9,6 +9,7 @@ module DulHydra::Batch::Scripts
     # Options
     #   :dirpath - required - path to directory tree containing files to be ingested
     #   :username - required - username of user with whom to associate batch
+    #   :collection_pid - optional - PID of the collection to which items should be children
     #   :log_dir - optional - directory for log file - default is given in DEFAULT_LOG_DIR
     #   :log_file - optional - filename of log file - default is given in DEFAULT_LOG_FILE
     
