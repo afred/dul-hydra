@@ -7,3 +7,8 @@
 form.bookmark_toggle {
 	display: inline;
 }
+.object_permissions_form legend {
+	margin: 0;
+	font-size: medium;
+	font-weight: bold;
+}

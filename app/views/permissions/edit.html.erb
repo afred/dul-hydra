@@ -1,0 +1,27 @@
+<h4>Edit Permissions</h4>
+<%= bootstrap_form_tag permissions_path(current_object), method: :put, class: "object_permissions_form" do %>
+  <% ["discover", "read", "edit"].each do |permission| %>
+    <fieldset>
+	  <legend><%= permission.capitalize %></legend>
+	  <div class="row">
+		<div class="span4">
+		  <fieldset>
+			<legend>Users</legend>
+			<%= select_tag "object[#{permission}_users]", options_for_select(User.all.collect { |u| u.user_key }, current_object.send("#{permission}_users")), multiple: true, class: "object_permissions_picker" %>
+		  </fieldset>
+		</div>
+		<div class="span5">
+		  <fieldset>
+			<legend>Users</legend>
+			<%= select_tag "object[#{permission}_users]", options_for_select(User.all.collect { |u| u.user_key }, current_object.send("#{permission}_users")), multiple: true, class: "object_permissions_picker" %>
+		  </fieldset>
+		</div>
+	  </div>
+	</fieldset>
+  <% end %>
+<% end %>
+<script type="text/javascript">
+  $(function() {
+    $(".object_permissions_picker").chosen();
+  });
+</script>
