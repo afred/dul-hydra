@@ -6,9 +6,10 @@ class AdminPolicy < Hydra::AdminPolicy
 
   include ActiveFedora::Auditable
 
-  delegate :default_license_title, :to => 'defaultRights', :at => [:license, :title], :multiple => false
-  delegate :default_license_description, :to => 'defaultRights', :at => [:license, :description], :multiple => false
-  delegate :default_license_url, :to => 'defaultRights', :at => [:license, :url], :multiple => false
+  delegate :default_license, to: 'defaultRights', multiple: false
+  delegate :default_license_title, to: 'defaultRights', at: [:license, :title], multiple: false
+  delegate :default_license_description, to: 'defaultRights', at: [:license, :description], multiple: false
+  delegate :default_license_url, to: 'defaultRights', at: [:license, :url], multiple: false
 
   APO_NAMESPACE = "duke-apo"
 

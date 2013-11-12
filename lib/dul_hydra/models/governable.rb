@@ -10,5 +10,9 @@ module DulHydra::Models
       admin_policy ? admin_policy.default_permissions : []
     end
 
+    def default_license
+      admin_policy ? admin_policy.datastreams["defaultRights"].license : nil
+    end
+
   end
 end

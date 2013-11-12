@@ -184,7 +184,7 @@ module ApplicationHelper
     date.to_formatted_s(:db) if date
   end
 
-  Grant = Struct.new(:type, :name, :inherited)
+  #Grant = Struct.new(:type, :name, :inherited)
 
   def display_grants
     grants = {}
@@ -207,35 +207,39 @@ module ApplicationHelper
     grants = []
     direct_groups = current_object.send("#{permission}_groups")
     if direct_groups.include?(Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC)
-      return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC)
+      #return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC)
+      return grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC)
     end
     if current_object.has_admin_policy?
       inherited_groups = current_ability.send("#{permission}_groups_from_policy", current_object.admin_policy.pid) - direct_groups
       if inherited_groups.include?(Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC)
-        return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC, true)
+        #return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC, true)
+        return grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_PUBLIC, inherited: true)
       end
       if direct_groups.include?(Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED)
-        return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED)
+        #return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED)
+        return grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED)
       end
       if inherited_groups.include?(Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED)
-        return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED, true)
+        #return grants << Grant.new(:group, Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED, true)
+        return grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: Hydra::AccessControls::AccessRight::PERMISSION_TEXT_VALUE_AUTHENTICATED, inherited: true)
       end
     else
       inherited_groups = []
     end
-    direct_groups.each { |g| grants << Grant.new(:group, g) }
-    inherited_groups.each { |g| grants << Grant.new(:group, g, true) }
+    direct_groups.each { |g| grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: g) }
+    inherited_groups.each { |g| grants << Hydra::AccessControls::InheritablePermission.new(type: :group, access: permission, name: g, inherited: true) }
     direct_users = current_object.send("#{permission}_users")
-    direct_users.each { |u| grants << Grant.new(:user, u) }
+    direct_users.each { |u| grants << Hydra::AccessControls::InheritablePermission.new(type: :user, access: permission, name: u) }
     if current_object.has_admin_policy?
       inherited_users = current_ability.send("#{permission}_persons_from_policy", current_object.admin_policy.pid) - direct_users
-      inherited_users.each { |u| grants << Grant.new(:user, u, true) }
+      inherited_users.each { |u| grants << Hydra::AccessControls::InheritablePermission.new(type: :user, access: permission, name: u, inherited: true) }
     end
     grants
   end
 
   def default_permission_grants(permission)
-    current_object.default_permissions.select { |p| p[:type] == permission }.collect { |p| Grant.new(p[:type], p[:name]) }
+    current_object.default_permissions.select { |p| p[:type] == permission }.collect { |p| Hydra::AccessControls::InheritablePermission.new(permission.merge({inherited: true})) }
   end
 
   def inheritable_permissions(object)

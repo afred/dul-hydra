@@ -1,27 +1,44 @@
 <h4>Edit Permissions</h4>
-<%= bootstrap_form_tag permissions_path(current_object), method: :put, class: "object_permissions_form" do %>
-  <% ["discover", "read", "edit"].each do |permission| %>
+<%= form_tag permissions_path(current_object), method: :put, class: "object-permissions-form" do %>
+  <% all_permissions.each do |permission| %>
     <fieldset>
-	  <legend><%= permission.capitalize %></legend>
+	  <legend>
+		<strong><%= permission.upcase %></strong>
+		<small><span class="muted">- <%= t("dul_hydra.permissions.descriptions.#{permission}") %></span></small>
+	  </legend>
 	  <div class="row">
-		<div class="span4">
+		<div class="span3 user-permissions">
+		  <% if current_object.has_admin_policy? %>
+		    <p>
+			  Inherited: 
+			</p>
+		  <% end %>
 		  <fieldset>
-			<legend>Users</legend>
-			<%= select_tag "object[#{permission}_users]", options_for_select(User.all.collect { |u| u.user_key }, current_object.send("#{permission}_users")), multiple: true, class: "object_permissions_picker" %>
+			<legend><%= permission.upcase %>: Users</legend>
+			<%= select_tag "object[#{permission}_users]", user_options_for_select(permission), multiple: true %>
 		  </fieldset>
 		</div>
-		<div class="span5">
+		<div class="span6 group-permissions">
 		  <fieldset>
-			<legend>Users</legend>
-			<%= select_tag "object[#{permission}_users]", options_for_select(User.all.collect { |u| u.user_key }, current_object.send("#{permission}_users")), multiple: true, class: "object_permissions_picker" %>
+			<legend><%= permission.upcase %>: Groups</legend>
+			<%= select_tag "object[#{permission}_groups]", group_options_for_select(permission), multiple: true %>
 		  </fieldset>
 		</div>
 	  </div>
 	</fieldset>
   <% end %>
+  <p>
+	<%= submit_tag "Save", data: { confirm: "The permissions on this object will be overwritten with your selections. Continue?" }, class: "btn btn-primary" %>
+	<%= link_to "Cancel", :back, data: { confirm: "All changes will be lost! Are you sure?" }, class: "btn btn-danger" %>
+  </p>
 <% end %>
 <script type="text/javascript">
   $(function() {
-    $(".object_permissions_picker").chosen();
+    $(".user-permissions select").chosen(
+      {placeholder_text_multiple: "Select Users"}
+    );
+    $(".group-permissions select").chosen(
+      {placeholder_text_multiple: "Select Groups"}
+    );
   });
 </script>

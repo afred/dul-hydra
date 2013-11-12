@@ -11,5 +11,9 @@ module DulHydra::Models
     # adds methods for managing Hydra rightsMetadata content
     include Hydra::AccessControls::Permissions
 
+    def license
+      rightsMetadata.license
+    end
+
   end
 end
